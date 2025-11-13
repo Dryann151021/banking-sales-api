@@ -35,7 +35,7 @@ const getUsersController = asyncHandler(async (req, res) => {
 });
 
 const getUserDetailController = asyncHandler(async (req, res) => {
-  const user = await userService.getUserById(req.params.id);
+  const user = await userService.getUserDetail(req.params.id);
   res.status(200).json({
     status: 'success',
     data: {

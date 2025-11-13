@@ -5,7 +5,7 @@ const {
 } = require('./validator');
 const tokenManager = require('../../utils/tokenManager');
 const asyncHandler = require('../../utils/asyncHandler');
-const AuthenticationsService = require('../../services/postgre/authenticationsService');
+const AuthenticationsService = require('../../services/postgre/AuthenticationsService');
 const UsersService = require('../../services/postgre/UsersService');
 
 const authenticationsService = new AuthenticationsService();
