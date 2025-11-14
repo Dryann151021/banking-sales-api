@@ -96,11 +96,84 @@ class LeadsService {
     return result.rows[0].id;
   }
 
-  async getAllLeads() {
-    const result = await this._pool.query(
-      'SELECT name, email, age, job, probability_score, category, status  FROM leads'
-    );
-    return result.rows.map(listLeadToModel);
+  async getAllLeads(params) {
+    const {
+      page = 1,
+      limit = 10,
+      sortBy = 'probability_score',
+      order = 'DESC',
+      filters = {},
+    } = params;
+    const where = [];
+    const values = [];
+    let index = 1;
+
+    // filter berdasarkan category
+    if (filters.category) {
+      where.push(`category = $${index++}`);
+      values.push(filters.category);
+    }
+
+    // filter berdasarkan status
+    if (filters.status) {
+      where.push(`status = $${index++}`);
+      values.push(filters.status);
+    }
+
+    // filter berdasarkan job
+    if (filters.job) {
+      where.push(`job = $${index++}`);
+      values.push(filters.job);
+    }
+
+    // filter berdasarkan minimum score
+    if (filters.minScore) {
+      where.push(`probability_score = $${index++}`);
+      values.push(filters.minScore);
+    }
+
+    // filter berdasarkan maximum score
+    if (filters.maxScore) {
+      where.push(`probability_score = $${index++}`);
+      values.push(filters.maxScore);
+    }
+
+    // filter berdasarkan pencarian
+    if (filters.search) {
+      where.push(`name ILIKE $${index}`);
+      values.push(`%${filters.search}%`);
+      index++;
+    }
+
+    const whereSql = where.length > 0 ? `WHERE ${where.join(' AND ')}` : '';
+    const startIndex = (page - 1) * limit;
+
+    const countQuery = {
+      text: `SELECT COUNT(*) AS total_leads FROM ${whereSql}`,
+      values: values,
+    };
+
+    const countResult = await this._pool.query(countQuery);
+    const totalLeads = parseInt(countResult.rows[0].total_leads);
+
+    const query = {
+      text: `SELECT name, email, age, job, probability_score, category, status  
+              FROM leads ${whereSql}
+              ORDERED BY ${sortBy} ${order}
+              LIMIT $${index} OFFSET $${index + 1}`,
+      values: [...values, limit, startIndex],
+    };
+
+    const result = await this._pool.query(query);
+    return {
+      leads: result.rows.map(listLeadToModel),
+      paginations: {
+        page,
+        limit,
+        totalLeads,
+        totalPages: Math.ceil(totalLeads / limit),
+      },
+    };
   }
 
   async getLeadsDetail(id) {
