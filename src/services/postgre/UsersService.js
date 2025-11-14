@@ -11,14 +11,15 @@ class UsersService {
     this._pool = new Pool();
   }
 
-  async addUser({
-    username,
-    password,
-    fullname,
-    email,
-    phone,
-    role = 'sales',
-  }) {
+  async addUser(userData) {
+    const {
+      username,
+      password,
+      fullname,
+      email,
+      phone,
+      role = 'sales',
+    } = userData;
     await this.verifyNewUsername(username);
     const id = `user-${nanoid(15)}`;
     const createdAt = new Date().toISOString();
