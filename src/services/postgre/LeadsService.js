@@ -1,14 +1,19 @@
+// Import nanoid untuk generate id random
 const { nanoid } = require('nanoid');
-const { Pool } = require('pg');
-const InvariantError = require('../../exceptions/InvariantError');
+
+// Import utils
 const { leadsToModel, listLeadToModel } = require('../../utils/mapDBToModel');
+
+// Import error handling
+const InvariantError = require('../../exceptions/InvariantError');
 const NotFoundError = require('../../exceptions/NotFoundError');
 
 class LeadsService {
-  constructor() {
-    this._pool = new Pool();
+  constructor(pool) {
+    this._pool = pool;
   }
 
+  // Fitur menambahkan lead/calon nasabah (hanya sebagai fitur testing)
   async addLead(leadData) {
     const id = `lead-${nanoid(8)}`;
     const createdAt = new Date().toISOString();
@@ -96,17 +101,12 @@ class LeadsService {
     return result.rows[0].id;
   }
 
-  async getAllLeads(params) {
-    const {
-      page = 1,
-      limit = 10,
-      sortBy = 'probability_score',
-      order = 'DESC',
-      filters = {},
-    } = params;
-    const where = [];
-    const values = [];
-    let index = 1;
+  // Fitur menampilkan seluruh lead/calon nasabah
+  // sebanyak 10 nasabah per page.
+  async getAllLeads({ page, limit, sortBy, order, filters }) {
+    const where = []; // Menampung string kondisi WHERE
+    const values = []; // Menampung parameterized query
+    let index = 1; // Index untuk PostgreSQL placeholder
 
     // filter berdasarkan category
     if (filters.category) {
@@ -128,13 +128,13 @@ class LeadsService {
 
     // filter berdasarkan minimum score
     if (filters.minScore) {
-      where.push(`probability_score = $${index++}`);
+      where.push(`probability_score >= $${index++}`);
       values.push(filters.minScore);
     }
 
     // filter berdasarkan maximum score
     if (filters.maxScore) {
-      where.push(`probability_score = $${index++}`);
+      where.push(`probability_score <= $${index++}`);
       values.push(filters.maxScore);
     }
 
@@ -149,7 +149,7 @@ class LeadsService {
     const startIndex = (page - 1) * limit;
 
     const countQuery = {
-      text: `SELECT COUNT(*) AS total_leads FROM ${whereSql}`,
+      text: `SELECT COUNT(*) AS total_leads FROM leads ${whereSql}`,
       values: values,
     };
 
@@ -159,7 +159,7 @@ class LeadsService {
     const query = {
       text: `SELECT name, email, age, job, probability_score, category, status  
               FROM leads ${whereSql}
-              ORDERED BY ${sortBy} ${order}
+              ORDER BY ${sortBy} ${order}
               LIMIT $${index} OFFSET $${index + 1}`,
       values: [...values, limit, startIndex],
     };
@@ -176,6 +176,7 @@ class LeadsService {
     };
   }
 
+  // Fitur menampilkan detail dari lead/calon nasabah
   async getLeadsDetail(id) {
     const query = {
       text: 'SELECT * FROM leads WHERE id = $1',

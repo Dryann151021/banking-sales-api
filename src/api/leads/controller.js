@@ -1,7 +1,6 @@
 const asyncHandler = require('../../utils/asyncHandler');
 const { postValidatePayload } = require('./validator');
-const LeadsService = require('../../services/postgre/LeadsService');
-const leadsService = new LeadsService();
+const leadsService = require('../../services/postgre');
 
 const postLeadController = asyncHandler(async (req, res) => {
   postValidatePayload(req.body);
@@ -17,11 +16,38 @@ const postLeadController = asyncHandler(async (req, res) => {
 });
 
 const getAllLeads = asyncHandler(async (req, res) => {
-  const leads = await leadsService.getAllLeads();
+  const {
+    page,
+    limit,
+    sortBy,
+    order,
+    category,
+    status,
+    job,
+    minScore,
+    maxScore,
+    search,
+  } = req.query;
+
+  const result = await leadsService.getAllLeads({
+    page: parseInt(page) || 1,
+    limit: parseInt(limit) || 10,
+    sortBy: sortBy || 'probability_score',
+    order: order || 'DESC',
+    filters: {
+      category,
+      status,
+      job,
+      minScore: minScore ? parseFloat(minScore) : undefined,
+      maxScore: maxScore ? parseFloat(maxScore) : undefined,
+      search,
+    },
+  });
   res.status(200).json({
     status: 'success',
     data: {
-      leads,
+      leads: result.leads,
+      paginations: result.paginations,
     },
   });
 });

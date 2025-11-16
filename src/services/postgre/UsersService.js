@@ -1,16 +1,18 @@
 const { nanoid } = require('nanoid');
-const { Pool } = require('pg');
 const bcrypt = require('bcrypt');
+const { usersToModel } = require('../../utils/mapDBToModel');
+
+// Error handling
 const InvariantError = require('../../exceptions/InvariantError');
 const NotFoundError = require('../../exceptions/NotFoundError');
 const AuthenticationsError = require('../../exceptions/AuthenticationError');
-const { usersToModel } = require('../../utils/mapDBToModel');
 
 class UsersService {
-  constructor() {
-    this._pool = new Pool();
+  constructor(pool) {
+    this._pool = pool;
   }
 
+  // Fitur menambahkan users (hanya sebagai fitur testing)
   async addUser(userData) {
     const {
       username,
