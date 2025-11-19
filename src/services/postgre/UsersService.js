@@ -67,7 +67,9 @@ class UsersService {
     const result = await this._pool.query(
       'SELECT id, username, fullname, role FROM users'
     );
-
+    if (!result.rows.length) {
+      throw new NotFoundError('Users tidak ditemukan');
+    }
     return result.rows.map(usersToModel);
   }
 
