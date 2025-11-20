@@ -98,24 +98,6 @@ const leadsToModel = ({
   createdAt: created_at,
 });
 
-const listLeadToModel = ({
-  name,
-  email,
-  age,
-  job,
-  probability_score,
-  category,
-  status,
-}) => ({
-  name,
-  email,
-  age,
-  job,
-  probabilityScore: probability_score,
-  category,
-  status,
-});
-
 const convertionTrendToModel = (leads) => ({
   date: leads.date.toISOString().split('T')[0],
   totalLeads: parseInt(leads.total_leads),
@@ -145,7 +127,6 @@ const notesToModel = (row) => ({
 module.exports = {
   usersToModel,
   leadsToModel,
-  listLeadToModel,
   convertionTrendToModel,
   distributionStatsToModel,
   notesToModel,
