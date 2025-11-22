@@ -4,6 +4,7 @@ const asyncHandler = require('../../utils/asyncHandler');
 const { postValidatePayload } = require('./validator');
 
 const { leadsService } = require('../../services/postgre');
+const translatedLeads = require('../../utils/translatedLeads');
 
 const postLeadController = asyncHandler(async (req, res) => {
   postValidatePayload(req.body);
@@ -80,36 +81,44 @@ const exportLeadsController = asyncHandler(async (req, res) => {
     },
   });
 
+  const data = leads.map(translatedLeads);
   const fields = [
-    'id',
-    'name',
-    'email',
-    'phone',
-    'age',
-    'job',
-    'marital',
-    'education',
-    'housing',
-    'loan',
-    'balance',
-    'contact',
-    'month',
-    'day_of_week',
-    'duration',
-    'probability_score',
-    'prediction_result',
-    'category',
-    'status',
-    'assigned_to',
-    'last_contacted_at',
-    'created_at',
+    'ID Lead',
+    'Nama',
+    'Email',
+    'Telepon',
+    'Usia',
+    'Pekerjaan',
+    'Status Pernikahan',
+    'Pendidikan',
+    'Kredit',
+    'Kepemilikan Rumah',
+    'Pinjaman',
+    'Saldo',
+    'Metode Kontak',
+    'Bulan',
+    'Hari',
+    'Durasi (detik)',
+    'Kampanye',
+    'Selang hari',
+    'Kontak Sebelumnya',
+    'Hasil kampanye',
+    'Variasi pekerjaan',
+    'Indeks Harga',
+    'Indeks Kepercayaan',
+    'Euribor 3 Bulan',
+    'Jumlah Karyawan',
+    'Skor Probabilitas (%)',
+    'Hasil Prediksi',
+    'Kategori',
+    'Status',
+    'Ditugaskan Kepada',
+    'Terakhir Dihubungi',
+    'Dibuat pada',
   ];
 
-  const parser = new Parser({
-    fields,
-    delimiter: ';',
-  });
-  const csv = parser.parse(leads);
+  const parser = new Parser({ fields, delimiter: ';' });
+  const csv = parser.parse(data);
 
   res.setHeader('Content-Type', 'text/csv');
   res.setHeader('Content-Disposition', 'attachment; filename=leads-export.csv');

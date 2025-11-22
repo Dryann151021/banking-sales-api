@@ -176,13 +176,7 @@ class LeadsService {
     const { whereSql, values } = leadsFilter(filters);
 
     const query = {
-      text: `SELECT id, name, email, phone, age, 
-                    job, marital, education, housing, loan, 
-                    balance, contact, month, day_of_week, duration, 
-                    probability_score, prediction_result, category, status,
-                    assigned_to, last_contacted_at, created_at
-              FROM leads ${whereSql}
-              ORDER BY probability_score DESC`,
+      text: `SELECT * FROM leads ${whereSql} ORDER BY probability_score DESC`,
       values: [...values],
     };
 
