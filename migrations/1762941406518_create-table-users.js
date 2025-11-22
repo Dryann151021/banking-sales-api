@@ -43,9 +43,9 @@ const up = async (pgm) => {
   const createdAt = new Date().toISOString();
 
   pgm.sql(
-    `INSERT INTO users(id, username, password, fullname, email, phone, role, created_at) VALUES
-    ('user-c9m7k8t3', 'Driyan', '${hashedPassword}', 'Adriyan', 
-     'adrian@email.com', '+62 851-2233-4455', 'sales', '${createdAt}')`
+    `INSERT INTO users(id, username, password, fullname, email, phone, role, created_at) VALUES 
+      ('user-c9m7k8t3', 'Driyan', '${hashedPassword}', 'Adriyan', 'adrian@email.com', '+62 851-2233-4455', 'sales', '${createdAt}'),
+      ('user-x1234abc', 'BunaTed', '${hashedPassword}', 'Buna Teddy', 'buna@teddy.com', '+62 812-0000-1111', 'sales', '${createdAt}')`
   );
 };
 
