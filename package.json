@@ -7,7 +7,8 @@
     "start": "cross-env NODE_ENV=production node server",
     "dev": "cross-env NODE_ENV=development nodemon server",
     "migrate": "cross-env NODE_ENV=development node-pg-migrate",
-    "psql": "psql postgres://dryann:driann--12@localhost:5432/banking_sales_db"
+    "psql": "psql postgres://dryann:driann--12@localhost:5432/banking_sales_db",
+    "apidoc": "npx apidoc -i src -o apidoc"
   },
   "keywords": [
     "RESTful API",
@@ -32,6 +33,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
+    "apidoc": "^1.2.0",
     "cross-env": "^10.1.0",
     "eslint": "^9.39.1",
     "globals": "^16.5.0",

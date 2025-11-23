@@ -5,6 +5,26 @@ const asyncHandler = require('../../utils/asyncHandler');
 const { leadsService } = require('../../services/postgre');
 const translatedLeads = require('../../utils/translatedLeads');
 
+/**
+ * @api {get} /leads Ambil semua leads
+ * @apiName GetAllLeads
+ * @apiGroup Leads
+ *
+ * @apiQuery {Number} page
+ * @apiQuery {Number} limit
+ * @apiQuery {String} sortBy
+ * @apiQuery {String} order
+ * @apiQuery {String} category
+ * @apiQuery {String} status
+ * @apiQuery {String} job
+ * @apiQuery {Number} minScore
+ * @apiQuery {Number} maxScore
+ * @apiQuery {String} search
+ *
+ * @apiSuccess (200) {Object[]} leads
+ * @apiSuccess (200) {Object} pagination
+ */
+
 const getAllLeadsController = asyncHandler(async (req, res) => {
   const {
     page,
@@ -42,6 +62,16 @@ const getAllLeadsController = asyncHandler(async (req, res) => {
   });
 });
 
+/**
+ * @api {get} /leads/:id Ambil detail lead
+ * @apiName GetLeadDetail
+ * @apiGroup Leads
+ *
+ * @apiParam {String} id ID Lead
+ *
+ * @apiSuccess (200) {Object} lead
+ */
+
 const getLeadDetailController = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const lead = await leadsService.getLeadsDetail(id);
@@ -52,6 +82,21 @@ const getLeadDetailController = asyncHandler(async (req, res) => {
     },
   });
 });
+
+/**
+ * @api {get} /leads/exports Export semua leads ke CSV
+ * @apiName ExportLeads
+ * @apiGroup Leads
+ *
+ * @apiQuery {String} category
+ * @apiQuery {String} status
+ * @apiQuery {String} job
+ * @apiQuery {Number} minScore
+ * @apiQuery {Number} maxScore
+ * @apiQuery {String} search
+ *
+ * @apiSuccess (200) {File} CSV
+ */
 
 const exportLeadsController = asyncHandler(async (req, res) => {
   const { category, status, job, minScore, maxScore, search } = req.query;
