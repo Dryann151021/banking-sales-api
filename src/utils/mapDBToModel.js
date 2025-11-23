@@ -59,7 +59,7 @@ const leadsToModel = ({
   prediction_result,
   category,
   status,
-  assigned_to,
+
   last_contacted_at,
   created_at,
 }) => ({
@@ -87,7 +87,6 @@ const leadsToModel = ({
   predictionResult: prediction_result,
   category: translateValue(category, categoryTranslation),
   status: translateValue(status, statusTranslation),
-  assignedTo: assigned_to,
   lastContactedAt: last_contacted_at,
   createdAt: created_at,
 });

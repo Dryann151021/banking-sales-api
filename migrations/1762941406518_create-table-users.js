@@ -1,5 +1,6 @@
 require('dotenv').config();
 const bcrypt = require('bcrypt');
+const { userPass } = require('../src/config/environment');
 
 const up = async (pgm) => {
   pgm.createTable('users', {
@@ -38,7 +39,7 @@ const up = async (pgm) => {
     },
   });
 
-  const password = process.env.USER_PASSWORD;
+  const password = userPass;
   const hashedPassword = await bcrypt.hash(password, 10);
   const createdAt = new Date().toISOString();
 

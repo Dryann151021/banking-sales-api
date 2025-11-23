@@ -100,9 +100,6 @@ export const up = (pgm) => {
       notNull: true,
       default: 'new',
     },
-    assigned_to: {
-      type: 'VARCHAR(30)',
-    },
     last_contacted_at: {
       type: 'VARCHAR(30)',
     },
@@ -118,7 +115,6 @@ export const up = (pgm) => {
   pgm.createIndex('leads', 'probability_score');
   pgm.createIndex('leads', 'category');
   pgm.createIndex('leads', 'status');
-  pgm.createIndex('leads', 'assigned_to');
 
   pgm.sql(`
     INSERT INTO leads (

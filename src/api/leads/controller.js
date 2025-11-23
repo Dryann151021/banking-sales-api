@@ -1,23 +1,9 @@
 const { Parser } = require('json2csv');
 
 const asyncHandler = require('../../utils/asyncHandler');
-const { postValidatePayload } = require('./validator');
 
 const { leadsService } = require('../../services/postgre');
 const translatedLeads = require('../../utils/translatedLeads');
-
-const postLeadController = asyncHandler(async (req, res) => {
-  postValidatePayload(req.body);
-
-  const leadId = await leadsService.addLead(req.body);
-  res.status(201).json({
-    status: 'success',
-    message: 'Nasabah berhasil ditambahkan',
-    data: {
-      leadId,
-    },
-  });
-});
 
 const getAllLeadsController = asyncHandler(async (req, res) => {
   const {
@@ -126,7 +112,6 @@ const exportLeadsController = asyncHandler(async (req, res) => {
 });
 
 module.exports = {
-  postLeadController,
   getAllLeadsController,
   getLeadDetailController,
   exportLeadsController,

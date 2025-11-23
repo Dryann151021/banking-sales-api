@@ -6,7 +6,8 @@
   "scripts": {
     "start": "cross-env NODE_ENV=production node server",
     "dev": "cross-env NODE_ENV=development nodemon server",
-    "migrate": "cross-env NODE_ENV=development node-pg-migrate"
+    "migrate": "cross-env NODE_ENV=development node-pg-migrate",
+    "psql": "psql postgres://dryann:driann--12@localhost:5432/banking_sales_db"
   },
   "keywords": [
     "RESTful API",
@@ -16,6 +17,7 @@
   "author": "Adriyan",
   "license": "ISC",
   "dependencies": {
+    "axios": "^1.13.2",
     "bcrypt": "^6.0.0",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
@@ -34,6 +36,9 @@
     "eslint": "^9.39.1",
     "globals": "^16.5.0",
     "nodemon": "^3.1.10"
+  },
+  "overrides": {
+    "glob": "^11.0.4"
   },
   "prettier": {
     "semi": true,

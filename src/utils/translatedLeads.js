@@ -42,7 +42,6 @@ const translatedLeads = (lead) => ({
   'Hasil Prediksi': lead.prediction_result,
   Kategori: translateValue(lead.category, categoryTranslation),
   Status: translateValue(lead.status, statusTranslation),
-  'Ditugaskan Kepada': lead.assigned_to,
   'Terakhir Dihubungi': lead.last_contacted_at,
   'Dibuat pada': lead.created_at,
 });

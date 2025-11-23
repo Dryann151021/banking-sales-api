@@ -10,6 +10,7 @@ const jobTranslation = {
   'self-employed': 'Wiraswasta',
   unknown: 'Tidak Diketahui',
   entrepreneur: 'Pengusaha',
+  student: 'Pelajar',
 };
 
 const maritalTranslation = {
