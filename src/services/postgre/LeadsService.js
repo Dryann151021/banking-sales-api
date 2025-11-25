@@ -41,7 +41,7 @@ class LeadsService {
     const totalLeads = parseInt(countResult.rows[0].total_leads);
 
     const query = {
-      text: `SELECT name, email, age, job, probability_score, category, status  
+      text: `SELECT id, name, email, age, job, probability_score, category, status  
               FROM leads ${whereSql}
               ORDER BY ${sortBy} ${order}
               LIMIT $${index} OFFSET $${index + 1}`,

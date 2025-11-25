@@ -117,6 +117,7 @@ const exportLeadsController = asyncHandler(async (req, res) => {
     'ID Lead',
     'Nama',
     'Email',
+    'Lokasi',
     'Telepon',
     'Usia',
     'Pekerjaan',
@@ -143,7 +144,6 @@ const exportLeadsController = asyncHandler(async (req, res) => {
     'Hasil Prediksi',
     'Kategori',
     'Status',
-    'Ditugaskan Kepada',
     'Terakhir Dihubungi',
     'Dibuat pada',
   ];

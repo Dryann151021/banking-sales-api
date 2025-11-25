@@ -16,6 +16,7 @@ const translatedLeads = (lead) => ({
   'ID Lead': lead.id,
   Nama: lead.name,
   Email: lead.email,
+  Lokasi: lead.locate,
   Telepon: lead.phone,
   Usia: lead.age,
   Pekerjaan: translateValue(lead.job, jobTranslation),

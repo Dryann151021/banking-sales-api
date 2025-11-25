@@ -52,20 +52,26 @@ const getChartController = asyncHandler(async (req, res) => {
  * @apiName GetPriorityLeads
  * @apiGroup Dashboard
  *
+ * @apiQuery {Number} page Halaman data (default: 1)
  * @apiQuery {Number} limit Batas jumlah data (default: 10)
  *
  * @apiSuccess (200) {Object[]} leads
+ * @apiSuccess (200) {Object} pagination
  */
 
 const getPriorityLeads = asyncHandler(async (req, res) => {
-  const { limit } = req.query;
+  const { page, limit } = req.query;
 
-  const leads = await dashboardService.getPriorityLeads(parseInt(limit) || 10);
+  const result = await dashboardService.getPriorityLeads({
+    page: parseInt(page, 10) || 1,
+    limit: parseInt(limit, 10) || 10,
+  });
 
   res.status(200).json({
     status: 'success',
     data: {
-      leads,
+      leads: result.leads,
+      pagination: result.pagination,
     },
   });
 });
