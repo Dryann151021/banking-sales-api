@@ -1,9 +1,8 @@
 const { Parser } = require('json2csv');
-
 const asyncHandler = require('../../utils/asyncHandler');
-
 const { leadsService } = require('../../services/postgre');
-const { translatedLeads, leadFields } = require('../../utils/getLeadsUtils');
+const { translatedLeads, leadFields } = require('../../utils/getLeadsHelper');
+const putLeadStatusValidator = require('./validator');
 
 /**
  * @api {get} /leads Ambil semua leads
@@ -95,7 +94,7 @@ const getLeadDetailController = asyncHandler(async (req, res) => {
  * @apiSuccess (200) {Object} pagination
  */
 
-const getPriorityLeads = asyncHandler(async (req, res) => {
+const getPriorityLeadsController = asyncHandler(async (req, res) => {
   const { page, limit, sortBy, order } = req.query;
 
   const result = await leadsService.getPriorityLeads({
@@ -129,6 +128,31 @@ const getPriorityLeads = asyncHandler(async (req, res) => {
  * @apiSuccess (200) {File} CSV
  */
 
+/**
+ * @api {put} /leads/:id/Perbarui status lead berdasarkan id
+ * @apiName PutLeadStatus
+ * @apiGroup Leads
+ *
+ * @apiParam {String} id Lead ID
+ *
+ * @apiBody {String} status (new, contacted, follow-up, converted, rejected)
+ *
+ * @apiSuccess (200) {String} message
+ */
+
+const putLeadStatusByIdController = asyncHandler(async (req, res) => {
+  putLeadStatusValidator(req.body);
+  const { id } = req.params;
+  const { status } = req.body;
+
+  await leadsService.updateLeadStatusById(id, status);
+
+  res.status(200).json({
+    status: 'success',
+    message: 'Status Leads berhasil diperbarui',
+  });
+});
+
 const exportLeadsController = asyncHandler(async (req, res) => {
   const { category, status, job, minScore, maxScore, search } = req.query;
 
@@ -157,6 +181,7 @@ const exportLeadsController = asyncHandler(async (req, res) => {
 module.exports = {
   getAllLeadsController,
   getLeadDetailController,
-  getPriorityLeads,
+  getPriorityLeadsController,
+  putLeadStatusByIdController,
   exportLeadsController,
 };

@@ -1,7 +1,7 @@
 // Import utils
 const { leadsToModel } = require('../../utils/mapDBToModel');
 const leadsFilter = require('../../utils/leadsFilter');
-const { verifySortOrder } = require('../../utils/getLeadsUtils');
+const { verifySortOrder, verifyStatus } = require('../../utils/getLeadsHelper');
 
 // Import error handling
 const NotFoundError = require('../../exceptions/NotFoundError');
@@ -123,6 +123,28 @@ class LeadsService {
         totalPages: Math.ceil(totalLeads / limit),
       },
     };
+  }
+
+  async updateLeadStatusById(leadId, status) {
+    const { status: validStatus, lastContactedAt } = verifyStatus(status);
+
+    const query = {
+      text: `
+        UPDATE leads 
+        SET status = $1, last_contacted_at = $2
+        WHERE id = $3 
+        RETURNING id
+      `,
+      values: [validStatus, lastContactedAt, leadId],
+    };
+
+    const result = await this._pool.query(query);
+
+    if (!result.rows.length) {
+      throw new NotFoundError('Gagal memperbarui status. Id tidak ditemukan');
+    }
+
+    return result.rows[0].id;
   }
 
   // Export daftar leads dalam format CSV
