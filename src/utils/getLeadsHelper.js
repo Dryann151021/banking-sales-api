@@ -11,6 +11,8 @@ const {
   translateValue,
   categoryTranslation,
   statusTranslation,
+  defaultTranslation,
+  yearsTranslation,
 } = require('./translations');
 
 const verifySortOrder = (sortBy, order) => {
@@ -84,6 +86,7 @@ const leadFields = [
   'Kategori',
   'Status',
   'Terakhir Dihubungi',
+  'Lama Menjadi Nasabah',
   'Dibuat pada',
 ];
 
@@ -93,13 +96,13 @@ const translatedLeads = (lead) => ({
   Email: lead.email,
   Lokasi: lead.locate,
   Telepon: lead.phone,
-  Usia: lead.age,
+  Usia: yearsTranslation(lead.age),
   Pekerjaan: translateValue(lead.job, jobTranslation),
   'Status Pernikahan': translateValue(lead.marital, maritalTranslation),
   Pendidikan: translateValue(lead.education, educationTranslation),
-  Kredit: translateValue(lead.default, yesNoTranslation),
+  Kredit: translateValue(lead.default, defaultTranslation),
   'Kepemilikan Rumah': translateValue(lead.housing, yesNoTranslation),
-  Pinjaman: translateValue(lead.loan, yesNoTranslation),
+  Pinjaman: translateValue(lead.loan, defaultTranslation),
   Saldo: lead.balance,
   'Metode Kontak': translateValue(lead.contact, contactTranslation),
   Bulan: translateValue(lead.month, monthTranslation),
@@ -119,6 +122,7 @@ const translatedLeads = (lead) => ({
   Kategori: translateValue(lead.category, categoryTranslation),
   Status: translateValue(lead.status, statusTranslation),
   'Terakhir Dihubungi': lead.last_contacted_at,
+  'Lama Menjadi Nasabah': yearsTranslation(lead.customer_duration),
   'Dibuat pada': lead.created_at,
 });
 

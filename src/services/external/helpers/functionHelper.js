@@ -37,6 +37,16 @@ const getBalance = () => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
+const duration = (min, max) => {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+};
+
+const getCustomerDuration = (category) => {
+  if (category === 'high') return duration(5, 10);
+  if (category === 'medium') return duration(3, 5);
+  return duration(1, 3);
+};
+
 const getCreatedAt = () => {
   const now = new Date();
   const daysAgo = new Date(now.getTime() - 23 * 24 * 60 * 60 * 1000);
@@ -58,6 +68,7 @@ module.exports = {
   getContact,
   getCategory,
   getBalance,
+  getCustomerDuration,
   getCreatedAt,
   dataCleaner,
 };

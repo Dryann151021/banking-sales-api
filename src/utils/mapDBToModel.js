@@ -62,6 +62,7 @@ const leadsToModel = ({
   status,
 
   last_contacted_at,
+  customer_duration,
   created_at,
 }) => ({
   id,
@@ -90,6 +91,7 @@ const leadsToModel = ({
   category: translateValue(category, categoryTranslation),
   status: translateValue(status, statusTranslation),
   lastContactedAt: last_contacted_at,
+  customerDuration: customer_duration,
   createdAt: created_at,
 });
 

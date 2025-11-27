@@ -1,7 +1,7 @@
 const addLeadsToDatabase = require('./addLeadsToDatabase');
 
 const importLeads = async (pool, leads) => {
-  const BATCH_SIZE = 100;
+  const BATCH_SIZE = 200;
   let imported = 0;
   let errors = 0;
 
@@ -14,7 +14,7 @@ const importLeads = async (pool, leads) => {
       const values = [];
       const placeholders = batch
         .map((lead, idx) => {
-          const offset = idx * 32;
+          const offset = idx * 33;
 
           values.push(
             lead.id,
@@ -48,11 +48,12 @@ const importLeads = async (pool, leads) => {
             lead.category,
             lead.status,
             lead.lastContactedAt,
+            lead.customerDuration,
             lead.createdAt
           );
 
           const params = Array.from(
-            { length: 32 },
+            { length: 33 },
             (_, j) => `$${offset + j + 1}`
           ).join(',');
 
@@ -67,7 +68,7 @@ const importLeads = async (pool, leads) => {
           duration, campaign, pdays, previous, poutcome,
           emp_var_rate, cons_price_idx, cons_conf_idx, euribor3m, nr_employed,
           probability_score, prediction_result, category, status,
-          last_contacted_at, created_at
+          last_contacted_at, customer_duration, created_at
         ) VALUES ${placeholders}
         ON CONFLICT(id) DO UPDATE SET
           probability_score = EXCLUDED.probability_score,
