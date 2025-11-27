@@ -121,10 +121,20 @@ const notesToModel = (row) => ({
   },
 });
 
+const leadHistoriesToModel = (row) => ({
+  id: row.id,
+  leadId: row.lead_id,
+  userId: row.user_id,
+  action: row.action,
+  details: row.details,
+  createdAt: row.created_at,
+});
+
 module.exports = {
   usersToModel,
   leadsToModel,
   convertionTrendToModel,
   distributionStatsToModel,
   notesToModel,
+  leadHistoriesToModel,
 };
