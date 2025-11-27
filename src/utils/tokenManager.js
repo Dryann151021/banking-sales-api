@@ -4,7 +4,7 @@ const InvariantError = require('../exceptions/InvariantError');
 const tokenManager = {
   generateAccessToken: (payload) => {
     return Jwt.sign(payload, process.env.ACCESS_TOKEN_KEY, {
-      expiresIn: '10h',
+      expiresIn: '1h',
     });
   },
   generateRefreshToken: (payload) => {
