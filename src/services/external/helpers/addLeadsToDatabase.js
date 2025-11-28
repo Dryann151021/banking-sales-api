@@ -7,11 +7,11 @@ const addLeadsToDatabase = async (pool, lead) => {
         duration, campaign, pdays, previous, poutcome,
         emp_var_rate, cons_price_idx, cons_conf_idx, euribor3m, nr_employed,
         probability_score, prediction_result, category, status,
-        last_contacted_at, created_at
+        last_contacted_at, customer_duration, created_at
       ) VALUES (
         $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12,
         $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23,
-        $24, $25, $26, $27, $28, $29, $30, $31, $32
+        $24, $25, $26, $27, $28, $29, $30, $31, $32, $33
       ) ON CONFLICT(id) DO UPDATE SET
         probability_score = EXCLUDED.probability_score,
         prediction_result = EXCLUDED.prediction_result,
@@ -49,6 +49,7 @@ const addLeadsToDatabase = async (pool, lead) => {
       lead.category,
       lead.status,
       lead.lastContactedAt,
+      lead.customerDuration,
       lead.createdAt,
     ],
   };

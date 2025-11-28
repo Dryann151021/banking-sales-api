@@ -20,7 +20,7 @@ export const up = (pgm) => {
     age: {
       type: 'INTEGER',
       notNull: true,
-      default: 0,
+      default: 17,
     },
     job: {
       type: 'VARCHAR(50)',
@@ -102,7 +102,11 @@ export const up = (pgm) => {
       default: 'new',
     },
     last_contacted_at: {
-      type: 'VARCHAR(30)',
+      type: 'TIMESTAMP',
+    },
+    customer_duration: {
+      type: 'INTEGER',
+      notNull: true,
     },
     created_at: {
       type: 'TIMESTAMP',

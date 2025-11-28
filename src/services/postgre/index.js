@@ -7,13 +7,15 @@ const AuthenticationsService = require('./AuthenticationsService');
 const LeadsService = require('./LeadsService');
 const DashboardService = require('./DashboardService');
 const NotesService = require('./NotesService');
+const LeadHistoriesService = require('./LeadHistoriesService');
 
 // Singleton instance
 const usersService = new UsersService(pool);
 const authenticationsService = new AuthenticationsService(pool);
-const leadsService = new LeadsService(pool);
+const leadHistoriesService = new LeadHistoriesService(pool);
+const leadsService = new LeadsService(pool, leadHistoriesService);
 const dashboardService = new DashboardService(pool);
-const notesService = new NotesService(pool);
+const notesService = new NotesService(pool, leadHistoriesService);
 
 module.exports = {
   usersService,
@@ -21,4 +23,5 @@ module.exports = {
   leadsService,
   dashboardService,
   notesService,
+  leadHistoriesService,
 };

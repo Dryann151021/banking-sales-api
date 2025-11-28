@@ -7,13 +7,14 @@ const {
   dataCleaner,
   getContact,
   getEmailByName,
+  getCustomerDuration,
 } = require('./functionHelper');
 
 const transformRow = (row) => {
   const id = `leads-${nanoid(6)}`;
   const name = row.nama_klien;
   const email = getEmailByName(name);
-  const locate = `${row.lokasi}, Indonesia`;
+  const locate = row.lokasi;
   const phone = getPhone(row.no_telp);
   const contact = getContact(phone);
   const probabilityScore = parseFloat(
@@ -21,6 +22,7 @@ const transformRow = (row) => {
   );
   const balance = getBalance();
   const category = getCategory(probabilityScore);
+  const customerDuration = getCustomerDuration(category);
   const createdAt = getCreatedAt();
 
   return {
@@ -54,6 +56,7 @@ const transformRow = (row) => {
     predictionResult: dataCleaner(row.prediksi),
     category,
     status: 'new',
+    customerDuration,
     lastContactedAt: null,
     createdAt,
   };

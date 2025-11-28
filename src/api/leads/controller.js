@@ -129,8 +129,9 @@ const putLeadStatusByIdController = asyncHandler(async (req, res) => {
   putLeadStatusValidator(req.body);
   const { id } = req.params;
   const { status } = req.body;
+  const userId = req.userId;
 
-  await leadsService.updateLeadStatusById(id, status);
+  await leadsService.updateLeadStatusById(id, status, userId);
 
   res.status(200).json({
     status: 'success',

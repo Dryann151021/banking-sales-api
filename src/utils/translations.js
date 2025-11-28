@@ -24,8 +24,14 @@ const educationTranslation = {
   'basic.6y': 'SD',
   'basic.9y': 'SMP',
   'high.school': 'SMA',
-  'professional.course': 'Diploma',
-  'university.degree': 'Sarjana',
+  'professional.course': 'D4 - Diploma',
+  'university.degree': 'S1 - Sarjana',
+};
+
+const defaultTranslation = {
+  yes: 'Ada',
+  no: 'Tidak ada',
+  unknown: 'Tidak diketahui',
 };
 
 const contactTranslation = {
@@ -85,6 +91,10 @@ const yesNoTranslation = {
   unknown: 'Tidak diketahui',
 };
 
+const yearsTranslation = (year) => {
+  return `${year} Tahun`;
+};
+
 const translateValue = (value, translationMap) => {
   if (!value) return value;
   const lowerValue = value.toString().toLowerCase();
@@ -95,6 +105,7 @@ module.exports = {
   jobTranslation,
   maritalTranslation,
   educationTranslation,
+  defaultTranslation,
   contactTranslation,
   monthTranslation,
   daysTranslation,
@@ -102,5 +113,6 @@ module.exports = {
   categoryTranslation,
   statusTranslation,
   yesNoTranslation,
+  yearsTranslation,
   translateValue,
 };

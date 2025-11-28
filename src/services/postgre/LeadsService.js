@@ -7,8 +7,9 @@ const { verifySortOrder, verifyStatus } = require('../../utils/getLeadsHelper');
 const NotFoundError = require('../../exceptions/NotFoundError');
 
 class LeadsService {
-  constructor(pool) {
+  constructor(pool, leadHistoriesService) {
     this._pool = pool;
+    this._leadHistoriesService = leadHistoriesService;
   }
 
   // Fitur menampilkan seluruh lead/calon nasabah
@@ -58,10 +59,10 @@ class LeadsService {
   async getLeadsDetail(id) {
     const query = {
       text: `SELECT id, name, email, locate, phone, age, 
-                    job, marital, education, housing, loan, 
+                    job, marital, education, "default", housing, loan, 
                     balance, contact, month, day_of_week, duration, 
                     probability_score, prediction_result, category, status,
-                    last_contacted_at, created_at
+                    last_contacted_at, customer_duration, created_at
              FROM leads WHERE id = $1`,
       values: [id],
     };
@@ -125,7 +126,7 @@ class LeadsService {
     };
   }
 
-  async updateLeadStatusById(leadId, status) {
+  async updateLeadStatusById(leadId, status, userId) {
     const { status: validStatus, lastContactedAt } = verifyStatus(status);
 
     const query = {
@@ -143,6 +144,13 @@ class LeadsService {
     if (!result.rows.length) {
       throw new NotFoundError('Gagal memperbarui status. Id tidak ditemukan');
     }
+
+    await this._leadHistoriesService.addHistory(
+      leadId,
+      userId,
+      'UPDATE_STATUS',
+      `Status updated to ${validStatus}`
+    );
 
     return result.rows[0].id;
   }

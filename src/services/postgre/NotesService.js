@@ -5,8 +5,9 @@ const { notesToModel } = require('../../utils/mapDBToModel');
 const AuthorizationError = require('../../exceptions/AuthorizationError');
 
 class NotesService {
-  constructor(pool) {
+  constructor(pool, leadHistoriesService) {
     this._pool = pool;
+    this._leadHistoriesService = leadHistoriesService;
   }
 
   async addNotes(leadId, userId, body) {
@@ -24,6 +25,13 @@ class NotesService {
     if (!result.rows.length) {
       throw new InvariantError('Catatan gagal ditambahkan');
     }
+
+    await this._leadHistoriesService.addHistory(
+      leadId,
+      userId,
+      'ADD_NOTE',
+      'Note added'
+    );
 
     return result.rows[0].id;
   }
@@ -64,6 +72,13 @@ class NotesService {
     if (!result.rows.length) {
       throw new NotFoundError('Catatan gagal diperbarui. Id tidak ditemukan');
     }
+
+    await this._leadHistoriesService.addHistory(
+      leadId,
+      userId,
+      'EDIT_NOTE',
+      'Note edited'
+    );
   }
 
   async deleteNoteByNoteId(noteId) {
@@ -76,6 +91,13 @@ class NotesService {
     if (!result.rows.length) {
       throw new NotFoundError('Gagal menghapus catatan. Id tidak ditemukan');
     }
+
+    await this._leadHistoriesService.addHistory(
+      leadId,
+      userId,
+      'DELETE_NOTE',
+      'Note deleted'
+    );
   }
 
   async verifyNoteAccess(noteId, userId) {

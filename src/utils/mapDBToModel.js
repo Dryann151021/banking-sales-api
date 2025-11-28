@@ -62,6 +62,7 @@ const leadsToModel = ({
   status,
 
   last_contacted_at,
+  customer_duration,
   created_at,
 }) => ({
   id,
@@ -90,6 +91,7 @@ const leadsToModel = ({
   category: translateValue(category, categoryTranslation),
   status: translateValue(status, statusTranslation),
   lastContactedAt: last_contacted_at,
+  customerDuration: customer_duration,
   createdAt: created_at,
 });
 
@@ -119,10 +121,20 @@ const notesToModel = (row) => ({
   },
 });
 
+const leadHistoriesToModel = (row) => ({
+  id: row.id,
+  leadId: row.lead_id,
+  userId: row.user_id,
+  action: row.action,
+  details: row.details,
+  createdAt: row.created_at,
+});
+
 module.exports = {
   usersToModel,
   leadsToModel,
   convertionTrendToModel,
   distributionStatsToModel,
   notesToModel,
+  leadHistoriesToModel,
 };

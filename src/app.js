@@ -8,6 +8,7 @@ const usersRoutes = require('./api/users/routes');
 const leadsRouter = require('./api/leads/routes');
 const dashboardRouter = require('./api/dashboard/routes');
 const notesRouter = require('./api/notes/routes');
+const historiesRouter = require('./api/histories/routes');
 const healthRouter = require('./api/health');
 
 // Import errorHandler
@@ -22,6 +23,7 @@ app.use('/authentications', authenticationRoutes);
 app.use('/users', usersRoutes);
 app.use('/leads', leadsRouter);
 app.use('/dashboard', dashboardRouter);
+app.use('/histories', historiesRouter);
 app.use('/', notesRouter);
 
 // Health route

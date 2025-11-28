@@ -6,12 +6,12 @@ const auth = (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
     if (!authHeader) {
-      throw new AuthenticationError('woppp mana tokennya💪😠🫵?!');
+      throw new AuthenticationError('Authentication dibutuhkan!');
     }
 
     const token = authHeader.split(' ')[1];
     if (!token) {
-      throw new InvariantError('Token tidak provided');
+      throw new InvariantError('Token tidak ditemukan');
     }
 
     const decoded = tokenManager.verifyAccessToken(token);
