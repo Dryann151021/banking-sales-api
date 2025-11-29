@@ -111,7 +111,6 @@ const distributionStatsToModel = (leads) => ({
 });
 
 const notesToModel = (row) => ({
-  id: row.id,
   leadId: row.lead_id,
   userId: row.user_id,
   body: row.body,
