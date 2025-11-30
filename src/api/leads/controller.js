@@ -179,10 +179,32 @@ const exportLeadsController = asyncHandler(async (req, res) => {
   res.status(200).send(csv);
 });
 
+/**
+ * @api {post} /leads/:id/email Kirim penawaran deposito via email
+ * @apiName SendDepositEmail
+ * @apiGroup Leads
+ *
+ * @apiParam {String} id Lead ID
+ *
+ * @apiSuccess (200) {String} message
+ */
+const postSendEmailToLeadController = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const userId = req.userId;
+
+  await leadsService.sendEmailToLead(id, userId);
+
+  res.status(200).json({
+    status: 'success',
+    message: 'Email berhasil dikirim',
+  });
+});
+
 module.exports = {
   getAllLeadsController,
   getLeadDetailController,
   getPriorityLeadsController,
   putLeadStatusByIdController,
   exportLeadsController,
+  postSendEmailToLeadController,
 };
