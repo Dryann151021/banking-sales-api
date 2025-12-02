@@ -46,7 +46,8 @@ const transporter = nodemailer.createTransport({
 
 const redisClient = redis.createClient({
   socket: {
-    host: process.env.REDIS_SERVER,
+    host: process.env.REDIS_HOST,
+    port: process.env.REDIS_PORT,
   },
 });
 
