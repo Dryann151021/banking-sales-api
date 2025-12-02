@@ -1,16 +1,16 @@
 const ClientError = require('../exceptions/ClientError');
 
 // eslint-disable-next-line no-unused-vars
-const errorHandler = (e, req, res, next) => {
-  if (e instanceof ClientError) {
-    return res.status(e.statusCode).json({
+const errorHandler = (error, req, res, next) => {
+  if (error instanceof ClientError) {
+    return res.status(error.statusCode).json({
       status: 'fail',
-      message: e.message,
+      message: error.message,
     });
   }
 
   // error duplikat username
-  if (e.code === '23505') {
+  if (error.code === '23505') {
     return res.status(400).json({
       status: 'fail',
       message: 'Username sudah digunakan.',
@@ -18,7 +18,7 @@ const errorHandler = (e, req, res, next) => {
   }
 
   // error tak terduga
-  console.log(e);
+  console.log(error);
   res.status(500).json({
     status: 'error',
     message: 'Terjadi kegagalan pada server kami.',
