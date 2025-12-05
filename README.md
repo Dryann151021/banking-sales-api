@@ -41,8 +41,7 @@ Sebelum menjalankan aplikasi, pastikan Anda telah menginstal:
 1.  **Clone Repository**
 
     ```bash
-    git clone <repository-url>
-    cd backend
+    git https://github.com/a25-cs097-capstone-project-asah/banking-sales-api.git
     ```
 
 2.  **Install Dependencies**
